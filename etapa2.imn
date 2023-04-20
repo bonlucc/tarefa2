@@ -1,0 +1,289 @@
+node n1 {
+    type router
+    model router
+    network-config {
+	hostname n1
+	!
+	interface eth1
+	 ip address 192.0.4.1/24
+	 ipv6 address 2001:db8:2::1/64
+	!
+	interface eth0
+	 ip address 192.0.3.1/24
+	 ipv6 address 2001:db8:1::1/64
+	!
+    }
+    canvas c1
+    iconcoords {364.0 276.0}
+    labelcoords {364.0 308.0}
+    interface-peer {eth0 n2}
+    interface-peer {eth1 n4}
+}
+
+node n2 {
+    type router
+    model router
+    network-config {
+	hostname n2
+	!
+	interface eth1
+	 ip address 192.0.2.1/24
+	 ipv6 address 2001:db8:0::1/64
+	!
+	interface eth0
+	 ip address 192.0.3.2/24
+	 ipv6 address 2001:db8:1::2/64
+	!
+    }
+    canvas c1
+    iconcoords {621.0 185.0}
+    labelcoords {621.0 217.0}
+    interface-peer {eth0 n1}
+    interface-peer {eth1 n5}
+}
+
+node n4 {
+    type router
+    model router
+    network-config {
+	hostname n4
+	!
+	interface eth1
+	 ip address 192.0.5.1/24
+	 ipv6 address 2001:db8:3::1/64
+	!
+	interface eth0
+	 ip address 192.0.4.2/24
+	 ipv6 address 2001:db8:2::2/64
+	!
+    }
+    canvas c1
+    iconcoords {209.0 343.0}
+    labelcoords {209.0 375.0}
+    interface-peer {eth0 n1}
+    interface-peer {eth1 n9}
+}
+
+node n5 {
+    type lanswitch
+    network-config {
+	hostname n5
+	!
+    }
+    canvas c1
+    iconcoords {770.0 180.0}
+    labelcoords {770.0 204.0}
+    interface-peer {e0 n8}
+    interface-peer {e1 n7}
+    interface-peer {e2 n6}
+    interface-peer {e3 n2}
+}
+
+node n6 {
+    type router
+    model host
+    network-config {
+	hostname ServidorWeb
+	!
+	interface eth0
+	 ip address 192.0.2.12/24
+	 ipv6 address 2001:db8:0::12/64
+	!
+    }
+    canvas c1
+    iconcoords {896.0 138.0}
+    labelcoords {896.0 170.0}
+    interface-peer {eth0 n5}
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('index.html', )
+	cmdup=('python -m SimpleHTTPServer', )
+	meta=ServidorWEB
+	starttime=1
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:index.html
+	custom-command index.html
+	config {
+	<!DOCTYPE html>
+	<html lang="pt-br">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Gerenciamento de medicamentos</title>
+	</head>
+	<body>
+	    <p>Um projeto para realização de pedidos de medicamentos</p>
+	</body>
+	</html>
+	
+	}
+    }
+    services {DefaultRoute SSH UserDefined}
+}
+
+node n7 {
+    type router
+    model host
+    network-config {
+	hostname ServidorDNS
+	!
+	interface eth0
+	 ip address 192.0.2.11/24
+	 ipv6 address 2001:db8:0::11/64
+	!
+    }
+    canvas c1
+    iconcoords {613.0 131.0}
+    labelcoords {613.0 163.0}
+    interface-peer {eth0 n5}
+}
+
+node n8 {
+    type router
+    model host
+    network-config {
+	hostname ServidorDB
+	!
+	interface eth0
+	 ip address 192.0.2.10/24
+	 ipv6 address 2001:db8:0::10/64
+	!
+    }
+    canvas c1
+    iconcoords {860.0 260.0}
+    labelcoords {860.0 292.0}
+    interface-peer {eth0 n5}
+}
+
+node n9 {
+    type router
+    model PC
+    network-config {
+	hostname cliente
+	!
+	interface eth0
+	 ip address 192.0.5.20/24
+	 ipv6 address 2001:db8:3::20/64
+	!
+    }
+    canvas c1
+    iconcoords {56.0 453.0}
+    labelcoords {56.0 485.0}
+    interface-peer {eth0 n4}
+}
+
+link l1 {
+    nodes {n5 n8}
+    bandwidth 0
+}
+
+link l2 {
+    nodes {n5 n7}
+    bandwidth 0
+}
+
+link l3 {
+    nodes {n5 n6}
+    bandwidth 0
+}
+
+link l4 {
+    nodes {n1 n2}
+    bandwidth 0
+}
+
+link l5 {
+    nodes {n1 n4}
+    bandwidth 0
+}
+
+link l6 {
+    nodes {n4 n9}
+    bandwidth 0
+}
+
+link l7 {
+    nodes {n2 n5}
+    bandwidth 0
+}
+
+annotation a1 {
+    iconcoords {220.0 178.0 546.0 416.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #cfcfff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a2 {
+    iconcoords {571.0 100.0 923.0 247.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #c0c048
+    width 0
+    border black
+    rad 25
+    canvas c1
+}
+
+annotation a3 {
+    iconcoords {702.0 202.0 906.0 301.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ecc061
+    width 0
+    border black
+    rad 25
+    canvas c1
+}
+
+annotation a4 {
+    iconcoords {11.0 299.0 217.0 518.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #c0c056
+    width 0
+    border black
+    rad 25
+    canvas c1
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+
+option session {
+}
+
